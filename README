@@ -1,4 +1,4 @@
-Install environment: conda env create -f env.yml
+Install environment: conda env create -f env.yml (or install packages named in env.yml from PyPI)
 
 Activate the environment: activate emg-plot
 
