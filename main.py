@@ -3,10 +3,15 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore, QtGui
 import socket
 import json
+import argparse
 
-num_plots = 16
-demo = True
-remote_addr = ('raspberrypi_b27', 8888)
+parser = argparse.ArgumentParser()
+parser.add_argument('--host', default='', type=str)
+args = parser.parse_args()
+
+demo = args.host == ''
+if not demo:
+    remote_addr = (args.host, 8888)
 
 if demo:
     sock = None
@@ -16,7 +21,7 @@ else:
 win = pg.GraphicsWindow()
 win.setWindowTitle('EMG Traces')
 
-
+num_plots = 16
 plots = []
 curves = []
 for i in range(num_plots):
@@ -32,7 +37,7 @@ current_data_view = None
 def update():
     global current_data_view, curves
     if not demo:
-        data = sock.recv(2 ** 13)
+        data = sock.recv(2 ** 13) # blocks until data?
         data = json.loads(data.decode('utf-8'))
         data = np.array([i['sample'] for i in data['emgMcs']])
     else:
