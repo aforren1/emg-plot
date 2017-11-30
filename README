@@ -1,0 +1,13 @@
+Install environment:
+
+conda env create -f env.yml
+
+Activate the environment:
+
+activate emg-plot
+
+Run the plot:
+
+python main.py
+
+Open main.py and change demo to `False` for the real deal. Also, note magic string used in `remote_addr`.
