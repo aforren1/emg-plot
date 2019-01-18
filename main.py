@@ -4,6 +4,9 @@ from pyqtgraph.Qt import QtCore, QtGui
 import socket
 import json
 import argparse
+import datetime
+
+filename = datetime.datetime.now().strftime('log_%Y-%m-%d_%H-%M-%S.txt')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--host', default='', type=str)
@@ -40,6 +43,8 @@ def update():
         data = sock.recv(2 ** 13) # blocks until data?
         data = json.loads(data.decode('utf-8'))
         data = np.array([i['sample'] for i in data['emgMcs']])
+        with open(filename, 'ab') as file:
+            np.savetxt(file, data, delimiter=',', fmt = '%d')
     else:
         data = np.random.random((150, 16))
     if current_data_view is None:
